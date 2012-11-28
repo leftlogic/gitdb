@@ -1,5 +1,5 @@
 var should = require('should'),
-    gittest = require('../lib/gittest'),
+    gittest = require('../lib/gitdb'),
     path = require('path'),
     fs = require('fs-extra');
 
@@ -23,7 +23,6 @@ describe('gitdb thing', function () {
         done();
       });
     });
-
   });
 
   it('should create a new git repo', function (done) {
@@ -31,13 +30,11 @@ describe('gitdb thing', function () {
         target_git = path.resolve(__dirname, './tmp/new_repo/.git');
     gittest.repo(target, function (err, repo) {
       should.not.exist(null);
-      console.log(repo);
       fs.exists(target_git, function (exists) {
         exists.should.be.ok;
         done();
       });
     });
-
   });
 
 });
