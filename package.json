@@ -1,0 +1,17 @@
+{
+  "name": "gittest",
+  "version": "0.0.0",
+  "description": "Nope.",
+  "main": "index.js",
+  "dependencies": {
+    "gitty": "*"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha -r should"
+  },
+  "repository": "",
+  "author": "",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}
