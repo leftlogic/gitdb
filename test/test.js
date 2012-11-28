@@ -59,6 +59,7 @@ describe('gitdb', function () {
       gitdb.connect('test_connect', function (err, db) {
         should.not.exist(err);
         db.should.be.ok;
+        db.name.should.eql('test_connect');
         fs.exists(target, function (exists) {
           exists.should.be.ok;
           done();
@@ -68,21 +69,22 @@ describe('gitdb', function () {
 
   });
 
-  describe('get', function () {
+  describe('insert', function () {
 
     var db;
 
     before(function (done) {
-      gitdb.connect('test_get', function (err, db_handle) {
+      gitdb.connect('test_insert', function (err, db_handle) {
         db = db_handle;
         done();
       });
     });
 
-    it('should ', function (done) {
-      db.get('example', function (err, example) {
+    it('should return a handle to a new repo', function (done) {
+      db.insert('example', function (err, example) {
         should.not.exist(err);
         example.should.be.ok;
+        example.name.should.eql('example');
         done();
       });
     });
