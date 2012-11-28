@@ -81,11 +81,45 @@ describe('gitdb', function () {
     });
 
     it('should return a handle to a new repo', function (done) {
-      db.insert('example', function (err, example) {
+      db.insert('notdata_example', function (err, notdata_example) {
         should.not.exist(err);
-        example.should.be.ok;
-        example.name.should.eql('example');
+        notdata_example.should.be.ok;
+        notdata_example.name.should.eql('notdata_example');
         done();
+      });
+    });
+
+    it('should create files when given data', function (done) {
+      var target = path.resolve(__dirname, 'tmp/gitdb/test_insert/create_example/text');
+      var data = {
+        text: 'What a great bit of text.'
+      };
+      db.insert('create_example', data, function (err, create_example) {
+        should.not.exist(err);
+        create_example.should.be.ok;
+        fs.exists(target, function (exists) {
+          exists.should.be.ok;
+          done();
+        });
+      });
+    });
+
+    it('should add and commit files when given data', function (done) {
+      var target = path.resolve(__dirname, 'tmp/gitdb/test_insert/commit_example/text');
+      var data = {
+        text: 'What a great bit of text.'
+      };
+      db.insert('commit_example', data, function (err, commit_example) {
+        should.not.exist(err);
+        commit_example.should.be.ok;
+        commit_example.repo.status(function (err, status) {
+          if (err === "") { err = null; }
+          should.not.exist(err);
+          status.staged.length.should.eql(0);
+          status.not_staged.length.should.eql(0);
+          status.untracked.length.should.eql(0);
+          done();
+        });
       });
     });
 
