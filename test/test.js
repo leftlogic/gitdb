@@ -127,4 +127,34 @@ describe('gitdb', function () {
 
   });
 
+  describe('get', function () {
+
+    var db;
+    var test_data = {
+      html: 'html',
+      css: 'css'
+    };
+
+    before(function (done) {
+      gitdb.connect('test_get', function (err, db_handle) {
+        db = db_handle;
+        db.insert('example', test_data, function (err, example) {
+          done();
+        });
+      });
+    });
+
+    it('should return data from and a handle to an existing repo', function (done) {
+      db.get('example', function (err, data, example) {
+        should.not.exist(err);
+        data.should.be.ok;
+        data.html.should.be.ok;
+        data.css.should.be.ok;
+        example.should.be.ok;
+        done();
+      });
+    });
+
+  });
+
 });
