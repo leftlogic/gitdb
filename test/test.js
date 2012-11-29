@@ -3,15 +3,23 @@ var should = require('should'),
     path = require('path'),
     fs = require('fs-extra');
 
-describe('gitdb.git', function () {
+var do_cleanup = true;
 
-  after(function (done) {
-    var target = path.resolve(__dirname, 'tmp/gitdb_git');
+var cleanup = function (dir) {
+  return function (done) {
+    var target = path.resolve(__dirname, dir);
+    if( !do_cleanup ) { return done(); }
     fs.remove(target, function (err) {
       if (err) { console.error(err); }
       done();
     });
-  });
+  };
+};
+
+
+describe('gitdb.git', function () {
+
+  after(cleanup('tmp/gitdb_git'));
 
   it('should create a new folder for repo', function (done) {
     var target = path.resolve(__dirname, 'tmp/gitdb_git/new_folder');
@@ -44,13 +52,7 @@ describe('gitdb', function () {
     gitdb.config.root = path.resolve(__dirname, 'tmp/gitdb');
   });
 
-  after(function (done) {
-    var target = path.resolve(__dirname, 'tmp/gitdb');
-    fs.remove(target, function (err) {
-      if (err) { console.error(err); }
-      done();
-    });
-  });
+  after(cleanup('tmp/gitdb'));
 
   describe('connect', function () {
 
