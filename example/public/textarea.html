@@ -1,0 +1,41 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Textarea example</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 5em;
+    font: 17px/1.5 sans-serif;
+  }
+  input, textarea {
+    font: 17px/1.5 sans-serif;
+    margin: 0 0 1em;
+    display: block;
+    width: 100%;
+    max-width: 30em;
+  }
+</style>
+
+<script src="js/jquery.js"></script>
+
+<input type="text" value="example">
+<textarea></textarea>
+
+<script>
+  $(function () {
+    var $input = $('input'),
+        $textarea = $('textarea');
+    $textarea.change(function () {
+      console.log('posting');
+      $.post('http://localhost:8000/save', {
+        id: $input.val(),
+        data: {
+          text: $textarea.val()
+        }
+      });
+    });
+  });
+</script>

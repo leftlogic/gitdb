@@ -4,9 +4,16 @@
   "description": "Nope.",
   "main": "index.js",
   "dependencies": {
-    "gitty": "*"
+    "gitty": "*",
+    "async": "*",
+    "fs-extra": "*"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "portfinder": "*",
+    "connect": "*"
+  },
   "scripts": {
     "test": "mocha -r should"
   },
