@@ -28,8 +28,17 @@
   $(function () {
     var $input = $('input'),
         $textarea = $('textarea');
+    var id = document.location.search.slice(1);
+
+    if (id) {
+      $.get('http://localhost:8000/get?id=' + id, function (data) {
+        data = JSON.parse(data);
+        $input.val(id);
+        $textarea.val(data.text);
+      });
+    }
+
     $textarea.change(function () {
-      console.log('posting');
       $.post('http://localhost:8000/save', {
         id: $input.val(),
         data: {

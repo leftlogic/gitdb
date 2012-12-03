@@ -15,21 +15,33 @@ var save = function (body, cb) {
   });
 };
 
+var get = function (id, cb) {
+  db.get(id, function (err, data) {
+    cb(err || data);
+  });
+};
+
 var app = connect();
 app
   .use(connect.logger('dev'))
   .use(connect.bodyParser())
+  .use(connect.query())
   .use(connect.compress())
-  .use(connect.static(path.resolve(__dirname, '../public')))
-  .use(function (req, res) {
+  .use(function (req, res, next) {
+    console.log(req.query);
     if( req.url === '/save' && req.method.match(/post/i) ) {
       save(req.body, function (result) {
         res.end(JSON.stringify(result));
       });
+    } else if( req.url.match(/\/get/i) && req.method.match(/get/i) && req.query.id ) {
+      get(req.query.id, function (result) {
+        res.end(JSON.stringify(result));
+      });
     } else {
-      res.end('{}');
+      next();
     }
-  });
+  })
+  .use(connect.static(path.resolve(__dirname, '../public')))
 
 gitdb.connect('textarea', function (err, db_handle) {
   if (err) { return console.log(err); }
