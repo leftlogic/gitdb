@@ -157,4 +157,46 @@ describe('gitdb', function () {
 
   });
 
+  describe('update', function () {
+
+    var db;
+    var init_data = {
+      html: 'html',
+      css: 'css'
+    };
+    var new_data = {
+      html: 'html cake',
+      javascript: 'fish'
+    };
+
+    before(function (done) {
+      gitdb.connect('test_update', function (err, db_handle) {
+        db = db_handle;
+        db.insert('update_example', init_data, function (err, update_example) {
+          done();
+        });
+      });
+    });
+
+    it('should return data from and a handle to an existing repo', function (done) {
+      db.update('update_example', new_data, function (update_err, update_example) {
+        should.not.exist(update_err);
+        update_example.should.be.ok;
+        db.get('update_example', function (get_error, data, update_example) {
+          should.not.exist(get_error);
+          data.should.be.ok;
+          data.html.should.be.ok;
+          data.html.should.eql('html cake');
+          data.css.should.be.ok;
+          data.css.should.eql('css');
+          data.javascript.should.be.ok;
+          data.javascript.should.eql('fish');
+          update_example.should.be.ok;
+          done();
+        });
+      });
+    });
+
+  });
+
 });
